@@ -1,0 +1,13 @@
+#
+# For a description of the syntax of this configuration file,
+# see the file kconfig-language.txt in the NuttX tools repository.
+#
+
+config EXAMPLES_MPU60X0_I2C
+	tristate "MPU60X0 I2C example"
+	default n
+	---help---
+		Enable the MPU60X0 I2C example
+
+if EXAMPLES_MPU60X0_I2C
+endif

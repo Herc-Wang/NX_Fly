@@ -30,7 +30,7 @@
 
 #include <stdint.h>
 
-#include <arch/chip/chip.h>  	 //add by wjh
+#include <arch/chip/chip.h>  	 //add by herc
 #include "stm32_gpio.h"
 /****************************************************************************
  * Pre-processor Definitions
@@ -47,7 +47,7 @@
 
 #define GPIO_LED1 \
   (GPIO_PORTB | GPIO_PIN8 | GPIO_OUTPUT_SET | GPIO_OUTPUT | GPIO_PULLUP | \
-   GPIO_SPEED_50MHz)				//fix by wjh
+   GPIO_SPEED_50MHz)				//fix by herc
 
 /* Buttons
  *
@@ -94,7 +94,7 @@
 #endif
 
 
-/* PWM   ----------wjh
+/* PWM   ----------herc
 *
 */
 
@@ -104,7 +104,7 @@
 #define STM32F411MINIMUM_PWMCHANNEL 1
 
 
-/* GPIO pins used by the GPIO Subsystem   ---add by  wjh*/
+/* GPIO pins used by the GPIO Subsystem   ---add by  herc*/
 
 #define BOARD_NGPIOIN     1 /* Amount of GPIO Input pins */
 #define BOARD_NGPIOOUT    1 /* Amount of GPIO Output pins */
@@ -118,6 +118,27 @@
 #define GPIO_OUT1         (GPIO_PORTB | GPIO_PIN8 | GPIO_OUTPUT_CLEAR | GPIO_OUTPUT | GPIO_PULLUP | GPIO_SPEED_50MHz)
 #define GPIO_INT1         (GPIO_INPUT|GPIO_FLOAT|GPIO_PORTB|GPIO_PIN10)
 
+
+
+/* I2C   ----------herc
+*
+*/
+
+/* I2c Configuration  this part finaly will define and set in the menuconfig, in other way ,set in Kconig*/
+//#define CONFIG_STM32_I2CBUS_ID 1
+//#define MPU60X0_I2C_BUS   1 /* MPU60X0 connected to I2C1 */
+//#define MPU60X0_MINOR     1
+
+
+/* MPU60X0   ----------herc
+*
+*/
+
+#define I2C_BUS_MPU60X0   1
+#define I2C_MINOR_MPU60X0  0
+#define GPIO_EXTI_MPU60X0 (GPIO_INPUT | GPIO_FLOAT | GPIO_SPEED_50MHz | \
+                           GPIO_OPENDRAIN | GPIO_PORTB | GPIO_PIN4)
+#define DEVNODE_MPU60X0   "/dev/imu0"
 
 /* procfs File System */
 
@@ -199,6 +220,17 @@ int stm32_pwm_setup(void);
  ****************************************************************************/
 #ifdef CONFIG_DEV_GPIO
 int stm32_gpio_initialize(void);
+#endif
+
+/****************************************************************************
+ * Name: stm32_mpu60x0_initialize
+ *
+ * Description:
+ *   Initialize MPU60X0 drivers for use with /apps/examples/XX        herc
+ *
+ ****************************************************************************/
+#ifdef CONFIG_SENSORS_MPU60X0
+int stm32_mpu60x0_initialize(void);
 #endif
 
 

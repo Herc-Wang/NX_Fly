@@ -1,5 +1,5 @@
 ############################################################################
-# boards/arm/stm32/stm32f411-minimum/src/Make.defs
+# apps/examples/mpu60x0_i2c/Make.defs
 #
 # Licensed to the Apache Software Foundation (ASF) under one or more
 # contributor license agreements.  See the NOTICE file distributed with
@@ -18,38 +18,6 @@
 #
 ############################################################################
 
-include $(TOPDIR)/Make.defs
-
-CSRCS = stm32_boot.c stm32_bringup.c 
-
-ifeq ($(CONFIG_NSH_LIBRARY),y)
-  CSRCS += stm32_appinit.c
+ifneq ($(CONFIG_EXAMPLES_MPU60X0_I2C),)
+CONFIGURED_APPS += $(APPDIR)/examples/mpu60x0_i2c
 endif
-
-ifeq ($(CONFIG_STM32_OTGFS),y)
-  CSRCS += stm32_usb.c
-endif
- 
-ifeq ($(CONFIG_ARCH_LEDS),y) ---add by wjh
-  CSRCS += stm32_autoleds.c
-endif
-
-ifeq ($(CONFIG_DEV_GPIO),y)
-  CSRCS += stm32_gpio.c
-endif
-
-ifeq ($(CONFIG_STM32_PWM),y)
-  CSRCS += stm32_pwm.c
-endif
-
-ifeq ($(CONFIG_STM32_I2C),y)
-  //CSRCS += stm32_i2c.c
-endif
-
-ifeq ($(CONFIG_SENSORS_MPU60X0),y)
-  CSRCS += stm32_mpu60x0.c
-endif
-
-DEPPATH += --dep-path board
-VPATH += :board
-CFLAGS += $(shell $(INCDIR) "$(CC)" $(TOPDIR)$(DELIM)arch$(DELIM)$(CONFIG_ARCH)$(DELIM)src$(DELIM)board$(DELIM)board)

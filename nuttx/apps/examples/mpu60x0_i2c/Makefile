@@ -1,5 +1,5 @@
 ############################################################################
-# boards/arm/stm32/stm32f411-minimum/src/Make.defs
+# examples/mpu60x0_i2c/Makefile
 #
 # Licensed to the Apache Software Foundation (ASF) under one or more
 # contributor license agreements.  See the NOTICE file distributed with
@@ -18,38 +18,17 @@
 #
 ############################################################################
 
-include $(TOPDIR)/Make.defs
+include $(APPDIR)/Make.defs
 
-CSRCS = stm32_boot.c stm32_bringup.c 
+# The mpu60x0_i2c example built-in application info
 
-ifeq ($(CONFIG_NSH_LIBRARY),y)
-  CSRCS += stm32_appinit.c
-endif
+PROGNAME = mpu60x0_i2c
+PRIORITY = SCHED_PRIORITY_DEFAULT
+STACKSIZE = $(CONFIG_DEFAULT_TASK_STACKSIZE)
+MODULE = $(CONFIG_EXAMPLES_MPU60X0_I2C)
 
-ifeq ($(CONFIG_STM32_OTGFS),y)
-  CSRCS += stm32_usb.c
-endif
- 
-ifeq ($(CONFIG_ARCH_LEDS),y) ---add by wjh
-  CSRCS += stm32_autoleds.c
-endif
+# The smallest thing you can build -- the MPU60X0_I2C example.
 
-ifeq ($(CONFIG_DEV_GPIO),y)
-  CSRCS += stm32_gpio.c
-endif
+MAINSRC = mpu60x0_i2c_main.c
 
-ifeq ($(CONFIG_STM32_PWM),y)
-  CSRCS += stm32_pwm.c
-endif
-
-ifeq ($(CONFIG_STM32_I2C),y)
-  //CSRCS += stm32_i2c.c
-endif
-
-ifeq ($(CONFIG_SENSORS_MPU60X0),y)
-  CSRCS += stm32_mpu60x0.c
-endif
-
-DEPPATH += --dep-path board
-VPATH += :board
-CFLAGS += $(shell $(INCDIR) "$(CC)" $(TOPDIR)$(DELIM)arch$(DELIM)$(CONFIG_ARCH)$(DELIM)src$(DELIM)board$(DELIM)board)
+include $(APPDIR)/Application.mk

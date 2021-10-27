@@ -41,6 +41,8 @@ struct spi_dev_s;
 struct i2c_master_s;
 #endif
 
+
+
 /* Specifies the initial chip configuration and location.
  *
  * The chip supports both SPI and I2C interfaces, but you wouldn't use

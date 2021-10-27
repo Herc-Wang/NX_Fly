@@ -51,30 +51,30 @@
 
 void stm32_boardinitialize(void)
 {
-
 _alert("---_alert-------stm32_boardinitialize --------success----\r\n");
+
 #ifdef CONFIG_ARCH_LEDS
   /* Configure on-board LEDs if LED support has been selected. */
 
   board_autoled_initialize();
 #endif
 
-#if defined(CONFIG_STM32_SPI1) || defined(CONFIG_STM32_SPI2) || \
-    defined(CONFIG_STM32_SPI3)
-  /* Configure SPI chip selects if 1) SP2 is not disabled, and 2) the
-   * weak function stm32_spidev_initialize() has been brought into the link.
-   */
+//#if defined(CONFIG_STM32_SPI1) || defined(CONFIG_STM32_SPI2) || \
+//    defined(CONFIG_STM32_SPI3)
+//  /* Configure SPI chip selects if 1) SP2 is not disabled, and 2) the
+//   * weak function stm32_spidev_initialize() has been brought into the link.
+//   */
+//
+//  stm32_spidev_initialize();
+//#endif
 
-  stm32_spidev_initialize();
-#endif
-
-#ifdef CONFIG_STM32_OTGFS
-  /* Initialize USB if the OTG FS controller is in the configuration.
-   * Presumably either CONFIG_USBDEV or CONFIG_USBHOST is also selected.
-   */
-
-  stm32_usbinitialize();
-#endif
+//#ifdef CONFIG_STM32_OTGFS
+//  /* Initialize USB if the OTG FS controller is in the configuration.
+//   * Presumably either CONFIG_USBDEV or CONFIG_USBHOST is also selected.
+//   */
+//
+//  stm32_usbinitialize();
+//#endif
 }
 
 /****************************************************************************
@@ -95,7 +95,6 @@ _alert("---_alert-------stm32_boardinitialize --------success----\r\n");
 void board_late_initialize(void)
 {
   /* Perform board-specific initialization */
-_alert("---_alert-------board_late_initialize --------success----\r\n");
   stm32_bringup();
 }
 #endif

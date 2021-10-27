@@ -35,7 +35,6 @@
 
 #include "chip.h"
 #include "arm_arch.h"
-#include "stm32_pwm.h"
 #include "stm32f411-minimum.h"
 
 /****************************************************************************
@@ -44,71 +43,46 @@
 
 /* Configuration ************************************************************/
 
-/* PWM
- *	PWM1---PA6	TIM3_CH1
- *	PWM2---PA7	TIM3_CH2
- *	PWM3---PB0	TIM3_CH3
- *	PWM4---PB1	TIM3_CH4
- *
- */
-
-#define HAVE_PWM 1
-
-#ifndef CONFIG_PWM
-#  undef HAVE_PWM
-#endif
-
-#ifndef CONFIG_STM32_TIM3
-#  undef HAVE_PWM
-#endif
-
-#ifndef CONFIG_STM32_TIM3_PWM
-#  undef HAVE_PWM
-#endif
-
-#if !defined(CONFIG_STM32_TIM3_CHANNEL)
-#  undef HAVE_PWM
-#endif
-
 /****************************************************************************
  * Public Functions
  ****************************************************************************/
 
+
+
 /****************************************************************************
- * Name: stm32_pwm_setup
+ * Name: stm32_mpu60x0_init
  *
  * Description:
- *   Initialize PWM and register the PWM device.
+ *   Initialize and configure the mpu60x0 
  *
  ****************************************************************************/
 
-int stm32_pwm_setup(void)
+int stm32_mpu60x0_init(int minor)
 {
+  FAR struct i2c_master_s *i2c;
   static bool initialized = false;
-  struct pwm_lowerhalf_s *pwm;
   int ret;
 
   /* Have we already initialized? */
 
   if (!initialized)
     {
-      /* Call stm32_pwminitialize() to get an instance of the PWM interface */
-      pwm = stm32_pwminitialize(STM32F411MINIMUM_PWMTIMER);
-      if (!pwm)
+      /* No.. Get the I2C bus driver */
+      _alert("Initialize I2C%d\n", MPU60X0_I2C_BUS);
+      i2c = stm32_i2cbus_initialize(MPU60X0_I2C_BUS);
+      if (!i2c)
         {
-          aerr("ERROR: Failed to get the STM32 PWM lower half\n");
+          ferr("ERROR: Failed to initialize I2C%d\n", MPU60X0_I2C_BUS);
           return -ENODEV;
         }
 
-      /* Register the PWM driver at "/dev/pwm0" */
-
-      ret = pwm_register("/dev/pwm0", pwm);
+      _alert("register I2C%d\n", MPU60X0_I2C_BUS);
+      ret = i2c_register(i2c, MPU60X0_I2C_BUS);
       if (ret < 0)
         {
-          aerr("ERROR: pwm_register failed: %d\n", ret);
-          return ret;
+          ferr("ERROR: Failed to register I2C%d driver\n", MPU60X0_I2C_BUS);
+          return -ENODEV;
         }
-
 
       /* Now we are initialized */
 
@@ -116,5 +90,4 @@ int stm32_pwm_setup(void)
     }
 
   return OK;
-
 }

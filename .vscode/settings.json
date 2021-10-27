@@ -1,0 +1,6 @@
+{
+    "files.associations": {
+        "i2c_master.h": "c",
+        "mpu60x0.h": "c"
+    }
+}

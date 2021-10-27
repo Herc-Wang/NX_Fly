@@ -216,11 +216,13 @@ enum mpu_regaddr_e
   FIFO_COUNTH = 0x72,
   FIFO_COUNTL = 0x73,
   FIFO_R_W = 0x74,
-  WHO_AM_I = 0x75,            /* RO reset: 0x68 */
+  WHO_AM_I = 0x75,            /* RO reset: 0x68    
+                                for mpu9250: The default value of the register is 0x71.*/
 };
 
 /* Describes the mpu60x0 sensor register file. This structure reflects
  * the underlying hardware, so don't change it!
+ *          move from mpu60x0.c     by herc  2021.10.27
  */
 
 begin_packed_struct struct sensor_data_s
@@ -233,6 +235,7 @@ begin_packed_struct struct sensor_data_s
   int16_t y_gyro;
   int16_t z_gyro;
 } end_packed_struct;
+
 
 /* Used by the driver to manage the device */
 
@@ -772,7 +775,7 @@ static int mpu_open(FAR struct file *filep)
   FAR struct mpu_dev_s *dev = inode->i_private;
 
   /* Reset the register cache */
-
+_alert("mpu open \r\n");// add by herc   2021.10.27
   mpu_lock(dev);
   dev->bufpos = 0;
   mpu_unlock(dev);
@@ -790,7 +793,7 @@ static int mpu_close(FAR struct file *filep)
   FAR struct mpu_dev_s *dev = inode->i_private;
 
   /* Reset (clear) the register cache. */
-
+_alert("mpu close \r\n");// add by herc   2021.10.27
   mpu_lock(dev);
   dev->bufpos = 0;
   mpu_unlock(dev);
@@ -840,7 +843,7 @@ static ssize_t mpu_read(FAR struct file *filep, FAR char *buf, size_t len)
   FAR struct inode *inode = filep->f_inode;
   FAR struct mpu_dev_s *dev = inode->i_private;
   size_t send_len = 0;
-
+//_alert("mpu read start \r\n");// add by herc   2021.10.27
   mpu_lock(dev);
 
   /* Populate the register cache if it seems empty. */
@@ -875,6 +878,7 @@ static ssize_t mpu_read(FAR struct file *filep, FAR char *buf, size_t len)
     }
 
   mpu_unlock(dev);
+//_alert("mpu read finish    send_len:%d\r\n", send_len);// add by herc   2021.10.27
 
   return send_len;
 }
@@ -983,12 +987,11 @@ int mpu60x0_register(FAR const char *path, FAR struct mpu_config_s *config)
   priv->config = *config;
 
   /* Reset the chip, to give it an initial configuration. */
-
+_alert("mpu_reset: arg   priv->config->i2c:%x   ,priv->config->addr=%x\n\n",priv->config.i2c,priv->config.addr);
   ret = mpu_reset(priv);
   if (ret < 0)
     {
       snerr("ERROR: Failed to configure mpu60x0: %d\n", ret);
-
       nxmutex_destroy(&priv->lock);
 
       kmm_free(priv);
@@ -1000,6 +1003,7 @@ int mpu60x0_register(FAR const char *path, FAR struct mpu_config_s *config)
   ret = register_driver(path, &g_mpu_fops, 0666, priv);
   if (ret < 0)
     {
+_alert("register_driver failed\n");
       snerr("ERROR: Failed to register mpu60x0 interface: %d\n", ret);
 
       nxmutex_destroy(&priv->lock);

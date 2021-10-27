@@ -30,15 +30,75 @@
 
 #include "stm32.h"
 
-#ifdef CONFIG_STM32_OTGFS
-#  include "stm32_usbhost.h"
-#endif
-
 #include "stm32f411-minimum.h"
+
+//#include <nuttx/i2c/i2c.h>
+
+#include <nuttx/i2c/i2c_master.h>
+
+#include <nuttx/sensors/mpu60x0.h>
 
 /****************************************************************************
  * Public Functions
  ****************************************************************************/
+
+
+/****************************************************************************
+ * Name: stm32_i2c_register
+ *
+ * Description:
+ *   Register one I2C drivers for the I2C tool.  
+ *                                add by herc  2021.10.26
+ *                                            copy from omnibusf4 board file
+ *
+ ****************************************************************************/
+
+#if defined(CONFIG_I2C) && defined(CONFIG_SYSTEM_I2CTOOL)
+static void stm32_i2c_register(int bus)
+{
+  FAR struct i2c_master_s *i2c;
+  int ret;
+
+  i2c = stm32_i2cbus_initialize(bus);
+  if (i2c == NULL)
+    {
+      syslog(LOG_ERR, "ERROR: Failed to get I2C%d interface\n", bus);
+    }
+  else
+    {
+      ret = i2c_register(i2c, bus);
+      if (ret < 0)
+        {
+          syslog(LOG_ERR, "ERROR: Failed to register I2C%d driver: %d\n",
+                 bus, ret);
+          stm32_i2cbus_uninitialize(i2c);
+        }
+    }
+}
+#endif
+
+/****************************************************************************
+ * Name: stm32_i2ctool
+ *
+ * Description:
+ *   Register I2C drivers for the I2C tool.
+ *                                add by herc  2021.10.26  
+ *                                          copy from omnibusf4 board file
+ *
+ ****************************************************************************/
+
+#if defined(CONFIG_I2C) && defined(CONFIG_SYSTEM_I2CTOOL)
+static void stm32_i2ctool(void)
+{
+  stm32_i2c_register(1);
+#if 0
+  stm32_i2c_register(1);
+  stm32_i2c_register(2);
+#endif
+}
+#else
+#  define stm32_i2ctool()
+#endif
 
 /****************************************************************************
  * Name: stm32_bringup
@@ -60,35 +120,29 @@ int stm32_bringup(void)
 //  long long leds_running_time = 0;
 //  bool leds_status = true;
 
-#if defined(CONFIG_STM32_OTGFS) && defined(CONFIG_USBHOST)
-  /* Initialize USB host operation.  stm32_usbhost_initialize() starts a
-   * thread will monitor for USB connection and disconnection events.
-   */
-
-  ret = stm32_usbhost_initialize();
-  if (ret != OK)
-    {
-      uerr("ERROR: Failed to initialize USB host: %d\n", ret);
-      return ret;
-    }
+#ifdef CONFIG_STM32_I2C
+  FAR struct i2c_master_s *i2cbus;
+#endif
+#ifdef CONFIG_MPU60X0_I2C
+  FAR struct mpu_config_s *mpu_config;
 #endif
 
+#if defined(CONFIG_I2C) && defined(CONFIG_SYSTEM_I2CTOOL)   //add by herc 2021.10.26
+  stm32_i2ctool();
+#endif
 
 #if defined(CONFIG_STM32_PWM)
-  /* Initialize pwm -----herc
-   */
-
+  /* Initialize pwm -----herc*/
   ret = stm32_pwm_setup();
-//_alert("--alert------stm32_pwm_setup --------success----\r\n");
   if (ret != OK)
-    {
-      uerr("ERROR: Failed to initialize PWM: %d\n", ret);
-      return ret;
-    }
+  {
+    uerr("ERROR: Failed to initialize PWM: %d\n", ret);
+    return ret;
+  }
 #endif
 
 
-//  test userleds by autoleds' example    ---add by wjh
+//  test userleds by autoleds' example    ---add by herc
 /*   
 board_autoled_initialize();
 
@@ -105,19 +159,31 @@ while(leds_running_time < 500000)
 #ifdef CONFIG_EXAMPLES_GPIO
   /* GPIO INIT */
   stm32_gpio_initialize();
-_alert("--alert------stm32_gpio_initialize --------success----\r\n");
 #endif
 
-#ifdef CONFIG_FS_PROCFS
-  /* Mount the procfs file system */
 
-  ret = nx_mount(NULL, STM32_PROCFS_MOUNTPOINT, "procfs", 0, NULL);
+#ifdef CONFIG_SENSORS_MPU60X0
+  /* Initialize the MPU60x0 device. */
+  
+  ret = stm32_mpu60x0_initialize();
   if (ret < 0)
-    {
-      ferr("ERROR: Failed to mount procfs at %s: %d\n",
-           STM32_PROCFS_MOUNTPOINT, ret);
-    }
+  {
+    syslog(LOG_ERR, "ERROR: stm32_mpu60x0_initialize() failed: %d\n", ret);
+  }
 #endif
+
+//#endif
+
+//#ifdef CONFIG_FS_PROCFS
+//  /* Mount the procfs file system */
+//
+//  ret = nx_mount(NULL, STM32_PROCFS_MOUNTPOINT, "procfs", 0, NULL);
+//  if (ret < 0)
+//    {
+//      ferr("ERROR: Failed to mount procfs at %s: %d\n",
+//           STM32_PROCFS_MOUNTPOINT, ret);
+//    }
+//#endif
 
   return ret;
 }
