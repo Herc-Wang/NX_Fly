@@ -36,7 +36,8 @@
 
 #include <nuttx/i2c/i2c_master.h>
 
-#include <nuttx/sensors/mpu60x0.h>
+//#include <nuttx/sensors/mpu60x0.h>
+//#include <nuttx/sensors/spl06.h>
 
 /****************************************************************************
  * Public Functions
@@ -122,10 +123,18 @@ int stm32_bringup(void)
 
 #ifdef CONFIG_STM32_I2C
   FAR struct i2c_master_s *i2cbus;
+
+  /* Get the i2c bus instance. */
+  i2cbus = stm32_i2cbus_initialize(I2C_BUS);
+  if (!i2cbus)
+  {
+      ferr("ERROR: Failed to initialize I2CBUS%d\n", I2C_BUS);
+      return -ENODEV;
+  }
 #endif
-#ifdef CONFIG_MPU60X0_I2C
-  FAR struct mpu_config_s *mpu_config;
-#endif
+//#ifdef CONFIG_MPU60X0_I2C
+//  FAR struct mpu_config_s *mpu_config;
+//#endif
 
 #if defined(CONFIG_I2C) && defined(CONFIG_SYSTEM_I2CTOOL)   //add by herc 2021.10.26
   stm32_i2ctool();
@@ -140,6 +149,7 @@ int stm32_bringup(void)
     return ret;
   }
 #endif
+
 
 
 //  test userleds by autoleds' example    ---add by herc
@@ -165,11 +175,20 @@ while(leds_running_time < 500000)
 #ifdef CONFIG_SENSORS_MPU60X0
   /* Initialize the MPU60x0 device. */
   
-  ret = stm32_mpu60x0_initialize();
+  ret = stm32_mpu60x0_initialize(i2cbus);
   if (ret < 0)
   {
     syslog(LOG_ERR, "ERROR: stm32_mpu60x0_initialize() failed: %d\n", ret);
   }
+#endif
+
+#ifdef CONFIG_SENSORS_SPL06
+  /* Initialize the SPL06 device. */
+  ret = stm32_spl06_initialize(i2cbus);
+  if (ret < 0)  
+  {
+    syslog(LOG_ERR, "ERROR: stm32_spl06_initialize() failed: %d\n", ret);
+  } 
 #endif
 
 //#endif

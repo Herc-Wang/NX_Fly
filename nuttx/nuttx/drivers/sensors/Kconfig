@@ -922,6 +922,28 @@ config SPS30_DEBUG
 
 endif # SENSORS_SPS30
 
+config SENSORS_SPL06
+	bool "GOERtEK SPL06 Sensor support"
+	default n
+	---help---
+		Enable driver support for GOERTEK SPL06 device.
+
+if SENSORS_SPL06
+
+config SPL06_I2C
+	bool "SPL06 I2C Interface"
+	depends on I2C
+	---help---
+		Enables support for the I2C interface (SPL06
+		autodetected during driver initialization)
+
+config SPL06_I2C_FREQ
+	int "SPL06 I2C Frequency"
+	depends on SPL06_I2C
+	default 400000
+
+endif # SENSORS_SPL06
+
 config SENSORS_T67XX
 	bool "Telair T6713 carbon dioxide sensor"
 	default n

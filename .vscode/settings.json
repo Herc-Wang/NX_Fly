@@ -1,6 +1,23 @@
 {
     "files.associations": {
         "i2c_master.h": "c",
-        "mpu60x0.h": "c"
+        "mpu60x0.h": "c",
+        "bmp180.h": "c",
+        "inttypes.h": "c",
+        "config.h": "c",
+        "limits.h": "c",
+        "stm32f411-minimum.h": "c",
+        "signal.h": "c",
+        "mutex.h": "c",
+        "spl06.h": "c"
+    },
+
+    "search.exclude": {
+        "**/.history": true,         
+
+    },
+
+    "files.exclude": {
+        "**/.history": true,
     }
 }

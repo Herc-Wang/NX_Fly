@@ -462,6 +462,7 @@ config ARCH_MATH_H
 config ARCH_FLOAT_H
 	bool "float.h"
 	default n
+	select LIBC_FLOATINGPOINT
 	---help---
 		The float.h header file defines the properties of your floating
 		point implementation.  It would always be best to use your

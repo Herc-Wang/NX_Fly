@@ -1,0 +1,13 @@
+#
+# For a description of the syntax of this configuration file,
+# see the file kconfig-language.txt in the NuttX tools repository.
+#
+
+config EXAMPLES_SPL06_I2C
+	tristate "SPL06 I2C example"
+	default n
+	---help---
+		Enable the SPL I2C example
+
+if EXAMPLES_SPL06_I2C
+endif

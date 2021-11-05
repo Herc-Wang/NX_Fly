@@ -123,6 +123,7 @@
 /* I2C   ----------herc
 *
 */
+#define I2C_BUS   1
 
 /* I2c Configuration  this part finaly will define and set in the menuconfig, in other way ,set in Kconig*/
 //#define CONFIG_STM32_I2CBUS_ID 1
@@ -130,15 +131,17 @@
 //#define MPU60X0_MINOR     1
 
 
-/* MPU60X0   ----------herc
-*
-*/
+/* MPU60X0   ----------herc */
 
-#define I2C_BUS_MPU60X0   1
+//#define I2C_BUS_MPU60X0   1
 #define I2C_MINOR_MPU60X0  0
 #define GPIO_EXTI_MPU60X0 (GPIO_INPUT | GPIO_FLOAT | GPIO_SPEED_50MHz | \
                            GPIO_OPENDRAIN | GPIO_PORTB | GPIO_PIN4)
 #define DEVNODE_MPU60X0   "/dev/imu0"
+
+
+/* SPL06   ----------herc  */
+#define DEVNODE_SPL06     "/dev/spl0"
 
 /* procfs File System */
 
@@ -230,7 +233,11 @@ int stm32_gpio_initialize(void);
  *
  ****************************************************************************/
 #ifdef CONFIG_SENSORS_MPU60X0
-int stm32_mpu60x0_initialize(void);
+int stm32_mpu60x0_initialize(FAR struct i2c_master_s *i2cbus);
+#endif
+
+#ifdef CONFIG_SENSORS_SPL06
+int stm32_spl06_initialize(FAR struct i2c_master_s *i2cbus);
 #endif
 
 

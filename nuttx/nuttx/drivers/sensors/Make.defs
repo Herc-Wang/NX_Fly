@@ -278,6 +278,10 @@ ifeq ($(CONFIG_SENSORS_MPU60X0),y)
   CSRCS += mpu60x0.c
 endif
 
+ifeq ($(CONFIG_SENSORS_SPL06),y)
+  CSRCS += spl06.c
+endif
+
 # Quadrature encoder upper half
 
 ifeq ($(CONFIG_SENSORS_QENCODER),y)

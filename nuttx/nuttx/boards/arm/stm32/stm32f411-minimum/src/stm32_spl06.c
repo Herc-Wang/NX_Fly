@@ -1,5 +1,5 @@
 /****************************************************************************
- * boards/arm/stm32/stm32f411-minimum/src/stm32_mpu60x0.c
+ * boards/arm/stm32/stm32f411-minimum/src/stm32_spl06.c
  *
  * Licensed to the Apache Software Foundation (ASF) under one or more
  * contributor license agreements.  See the NOTICE file distributed with
@@ -28,12 +28,8 @@
 #include <debug.h>
 #include <nuttx/irq.h>
 #include <nuttx/arch.h>
-#include <nuttx/spi/spi.h>
 
-#include <nuttx/sensors/mpu60x0.h>
-
-//#include "stm32_gpio.h"
-//#include "stm32_spi.h"
+#include <nuttx/sensors/spl06.h>
 #include "stm32f411-minimum.h"
 
 /****************************************************************************
@@ -41,11 +37,11 @@
  ****************************************************************************/
 
 /****************************************************************************
- * Name: stm32_mpu60x0_initialize
+ * Name: stm32_spl06_initialize
  *
  * Description:
  *
- *   Initialize and register's stm32f411-minimum's MPU60x0 IMU. The wiring
+ *   Initialize and register's stm32f411-minimum's spl06. The wiring
  *   isn't configurable, but we use macros anyway because some of the
  *   values are referred to in more than one place. And also, because
  *   that's generally what NuttX does.
@@ -57,43 +53,26 @@
  *   with the pattern.
  * 
  *                                      add by herc  2021.10.26
- *                                            copy from omnibusf4 board file
+ *                                            copy from stm32_mpu60x0.h
  *
  ****************************************************************************/
 
-int stm32_mpu60x0_initialize(FAR struct i2c_master_s *i2cbus)
+int stm32_spl06_initialize(FAR struct i2c_master_s *i2cbus)
 {
     
-    int ret;
+    int ret; 
 
-    //int exti = GPIO_EXTI_MPU60X0;
-    //UNUSED(exti);
-    //stm32_configgpio(GPIO_EXTI_MPU60X0);
-    
-//    mpu_config = kmm_zalloc(sizeof(struct mpu_config_s));
-//    if (mpu_config == NULL)
-//    {
-//        ferr("ERROR: Failed to allocate mpu60x0 driver\n");
-//        return -ENOMEM;
-//    }
-//    mpu_config->i2c = i2cbus;
-//    mpu_config->addr = 0x68;
-  
-    
-
-    struct mpu_config_s mpu_config = 
+    struct spl_config_s spl_config = 
     {
         .i2c  = i2cbus,
-        .addr = 0x69,
+        .addr = 0x77,     //SPL06_I2C_ADDR,
     };
 
-    /* TODO: configure EXTI pin */
-    /* Register the chip with the device driver. */
-    _alert("mpu60x0_register ：%s\n", DEVNODE_MPU60X0);
-    ret = mpu60x0_register(DEVNODE_MPU60X0, &mpu_config);
+    _alert("spl_register ：%s\n", DEVNODE_SPL06);
+    ret = spl06_register(DEVNODE_SPL06, &spl_config);
     if (ret < 0)
     {
-        ferr("ERROR: Failed to register I2Cx driver\n");
+        ferr("ERROR: Failed to register spl06 driver\n");
         return -ENODEV;
     }
 
