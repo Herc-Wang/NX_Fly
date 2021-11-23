@@ -71,6 +71,18 @@
 #define GPIO_SPI1_SCK_OFF  (GPIO_INPUT | GPIO_PULLDOWN | \
                             GPIO_PORTA | GPIO_PIN5)
 
+/* NRF24L01
+ * CS  - PB12 
+ * CE  - PA8 
+ * IRQ - PB2
+ */
+
+#define GPIO_NRF24L01_CS   (GPIO_OUTPUT | GPIO_SPEED_100MHz |           \
+                            GPIO_OUTPUT_SET | GPIO_PORTB | GPIO_PIN12)
+#define GPIO_NRF24L01_CE   (GPIO_OUTPUT | GPIO_SPEED_100MHz |             \
+                            GPIO_OUTPUT_CLEAR | GPIO_PORTA | GPIO_PIN8)
+#define GPIO_NRF24L01_IRQ  (GPIO_INPUT | GPIO_FLOAT | GPIO_PORTB | GPIO_PIN2)
+
 /* USB OTG FS
  *
  * PA9  OTG_FS_VBUS VBUS sensing (also connected to the green LED)

@@ -248,7 +248,7 @@ int nrf24_cfg(int fd)
      .payload_length = 32,
      .rx_addr =
         {
-          swapbits(0x8e), swapbits(0x89), swapbits(0xbe), swapbits(0xd6)
+          swapbits(0x34), swapbits(0x43), swapbits(0x10), swapbits(0x10), swapbits(0xFF)
         }
     };
 

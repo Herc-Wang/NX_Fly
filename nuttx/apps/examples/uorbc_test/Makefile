@@ -1,5 +1,5 @@
 ############################################################################
-# boards/arm/stm32/stm32f411-minimum/src/Make.defs
+# examples/uorbc_test/Makefile
 #
 # Licensed to the Apache Software Foundation (ASF) under one or more
 # contributor license agreements.  See the NOTICE file distributed with
@@ -18,46 +18,22 @@
 #
 ############################################################################
 
-include $(TOPDIR)/Make.defs
+include $(APPDIR)/Make.defs
 
-CSRCS = stm32_boot.c stm32_bringup.c 
+# The uorbc_test example built-in application info
+CSRCS += mod_uorbc_utils.c
+CSRCS += topics_src/topic_test0.c topics_src/topic_test1.c topics_src/topic_test2.c topics_src/topic_test3.c topics_src/topic_test4.c 
+CSRCS += topics_src/topic_test5.c topics_src/topic_test6.c topics_src/topic_test7.c topics_src/topic_test8.c topics_src/topic_test9.c topics_src/topic_test10.c 
 
-ifeq ($(CONFIG_NSH_LIBRARY),y)
-  CSRCS += stm32_appinit.c
-endif
+PROGNAME = uorbc_test
+PRIORITY = SCHED_PRIORITY_DEFAULT
+STACKSIZE = $(CONFIG_DEFAULT_TASK_STACKSIZE)
+MODULE = $(CONFIG_EXAMPLES_UORBC_TEST)
 
-ifeq ($(CONFIG_SPI),y)
-  CSRCS += stm32_spi.c
-endif
- 
-ifeq ($(CONFIG_ARCH_LEDS),y) ---add by wjh
-  CSRCS += stm32_autoleds.c
-endif
+# The smallest thing you can build -- the uorbc_test example.
 
-ifeq ($(CONFIG_DEV_GPIO),y)
-  CSRCS += stm32_gpio.c
-endif
+MAINSRC = uorbc_test_main.c
 
-ifeq ($(CONFIG_STM32_PWM),y)
-  CSRCS += stm32_pwm.c
-endif
 
-ifeq ($(CONFIG_STM32_I2C),y)
-  //CSRCS += stm32_i2c.c
-endif
 
-ifeq ($(CONFIG_SENSORS_MPU60X0),y)
-  CSRCS += stm32_mpu60x0.c
-endif
-
-ifeq ($(CONFIG_SENSORS_SPL06),y)
-  CSRCS += stm32_spl06.c
-endif
-
-ifeq ($(CONFIG_WL_NRF24L01),y)
-  CSRCS += stm32_nrf24l01.c
-endif
-
-DEPPATH += --dep-path board
-VPATH += :board
-CFLAGS += $(shell $(INCDIR) "$(CC)" $(TOPDIR)$(DELIM)arch$(DELIM)$(CONFIG_ARCH)$(DELIM)src$(DELIM)board$(DELIM)board)
+include $(APPDIR)/Application.mk

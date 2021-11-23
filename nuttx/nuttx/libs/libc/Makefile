@@ -65,6 +65,7 @@ include uuid/Make.defs
 include wchar/Make.defs
 include wctype/Make.defs
 include wqueue/Make.defs
+include uorbc/Make.defs
 
 CFLAGS += ${shell $(INCDIR) "$(CC)" $(TOPDIR)$(DELIM)libs$(DELIM)libc}
 

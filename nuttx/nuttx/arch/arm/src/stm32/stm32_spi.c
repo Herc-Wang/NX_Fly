@@ -2197,7 +2197,7 @@ FAR struct spi_dev_s *stm32_spibus_initialize(int bus)
       if (!priv->initialized)
         {
           /* Configure SPI2 pins: SCK, MISO, and MOSI */
-
+          printf("test : stm32_spibus_initialize   GPIO_SPI2_xxx_1/2 \r\n");
           stm32_configgpio(GPIO_SPI2_SCK);
           stm32_configgpio(GPIO_SPI2_MISO);
           stm32_configgpio(GPIO_SPI2_MOSI);

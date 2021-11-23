@@ -86,7 +86,7 @@
  * Can go up to 10 Mbs according to datasheet.
  */
 
-#define NRF24L01_SPIFREQ   9000000
+#define NRF24L01_SPIFREQ   375000
 
 /* power-down -> standby transition timing (in us).  Note: this value is
  * probably larger than required.
@@ -953,7 +953,7 @@ static int nrf24l01_open(FAR struct file *filep)
   dev = (FAR struct nrf24l01_dev_s *)inode->i_private;
 
   /* Get exclusive access to the driver data structure */
-
+printf("nrf24l01_open :   next will run nxsem_wait\r\n");//herc test 
   ret = nxsem_wait(&dev->devsem);
   if (ret < 0)
     {
@@ -961,19 +961,19 @@ static int nrf24l01_open(FAR struct file *filep)
     }
 
   /* Check if device is not already used */
-
+printf("nrf24l01_open :   next will run if (dev->nopens > 0)\r\n");//herc test 
   if (dev->nopens > 0)
     {
       ret = -EBUSY;
       goto errout;
     }
-
+printf("nrf24l01_open :   next will run nrf24l01_init\r\n");//herc test 
   ret = nrf24l01_init(dev);
   if (!ret)
     {
       dev->nopens++;
     }
-
+printf("nrf24l01_open :   next will over\r\n");//herc test 
 errout:
   nxsem_post(&dev->devsem);
   return ret;
@@ -1529,21 +1529,25 @@ int nrf24l01_init(FAR struct nrf24l01_dev_s *dev)
 {
   int ret = OK;
   uint8_t features;
-
+printf("nrf24l01_init :   init nrf24l01\r\n");//herc test
   CHECK_ARGS(dev);
+printf("nrf24l01_init :  next will run nrf24l01_lock(dev->spi);\r\n");//herc test
   nrf24l01_lock(dev->spi);
 
   /* Configure the SPI parameters before communicating */
-
+printf("nrf24l01_init :  next will run   nrf24l01_configspi(dev->spi);\r\n");//herc test
   nrf24l01_configspi(dev->spi);
 
   /* Enable features in hardware: dynamic payload length + sending without
    * expecting ACK
    */
-
+  features = nrf24l01_readregbyte(dev, NRF24L01_FEATURE);
+printf("nrf24l01_init:  pre  nrf24l01_readregbyte(dev, NRF24L01_FEATURE) = %d\r\n",features);//herc  这里写成功
+printf("nrf24l01_init :  next will run   nrf24l01_writeregbyte(dev, NRF24L01_FEATURE\r\n");//herc test
   nrf24l01_writeregbyte(dev, NRF24L01_FEATURE, NRF24L01_EN_DPL |
                              NRF24L01_EN_DYN_ACK);
   features = nrf24l01_readregbyte(dev, NRF24L01_FEATURE);
+printf("nrf24l01_init:  first  nrf24l01_readregbyte(dev, NRF24L01_FEATURE) = %d\r\n",features);//herc  这里写成功
   if (0 == features)
     {
       /* The ACTIVATE instruction is not documented in the nRF24L01+ docs.
@@ -1556,6 +1560,7 @@ int nrf24l01_init(FAR struct nrf24l01_dev_s *dev)
       nrf24l01_access(dev, MODE_WRITE, NRF24L01_ACTIVATE, &v, 1);
 
       features = nrf24l01_readregbyte(dev, NRF24L01_FEATURE);
+      printf("nrf24l01_init: second nrf24l01_readregbyte(dev, NRF24L01_FEATURE) = %d\r\n",features);//herc
       if (0 == features)
         {
           /* If FEATURES reg is still unset here, consider there is no
@@ -1568,33 +1573,33 @@ int nrf24l01_init(FAR struct nrf24l01_dev_s *dev)
     }
 
   /* Set initial state */
-
+printf("nrf24l01_init :  next will run   nrf24l01_tostate(dev, ST_POWER_DOWN);\r\n");//herc test
   nrf24l01_tostate(dev, ST_POWER_DOWN);
 
   /* Disable all pipes */
-
+printf("nrf24l01_init :  next will run   nrf24l01_writeregbyte(dev, NRF24L01_EN_RXADDR\r\n");//herc test
   dev->en_pipes = 0;
   nrf24l01_writeregbyte(dev, NRF24L01_EN_RXADDR, 0);
 
   /* Set addr width to default   */
-
+printf("nrf24l01_init :  next will run   nrf24l01_writeregbyte(dev, NRF24L01_SETUP_AW\r\n");//herc test
   dev->addrlen = CONFIG_WL_NRF24L01_DFLT_ADDR_WIDTH;
   nrf24l01_writeregbyte(dev, NRF24L01_SETUP_AW,
                         CONFIG_WL_NRF24L01_DFLT_ADDR_WIDTH - 2);
 
   /* Get pipe #0 addr */
-
+printf("nrf24l01_init :  next will run   nrf24l01_readreg(dev, NRF24L01_RX_ADDR_P0\r\n");//herc test
   nrf24l01_readreg(dev, NRF24L01_RX_ADDR_P0, dev->pipe0addr, dev->addrlen);
-
+printf("nrf24l01_init :  next will run   dev->en_aa = nrf24l01_readregbyte(dev, NRF24L01_EN_AA);\r\n");//herc test
   dev->en_aa = nrf24l01_readregbyte(dev, NRF24L01_EN_AA);
 
   /* Flush HW fifo */
-
+printf("nrf24l01_init :  next will run   nrf24l01_flush_r/tx(dev);\r\n");//herc test
   nrf24l01_flush_rx(dev);
   nrf24l01_flush_tx(dev);
 
   /* Clear interrupt sources (useful ?) */
-
+printf("nrf24l01_init :  next will run    nrf24l01_writeregbyte(dev, NRF24L01_STATUS,\r\n");//herc test
   nrf24l01_writeregbyte(dev, NRF24L01_STATUS,
                         NRF24L01_RX_DR | NRF24L01_TX_DS | NRF24L01_MAX_RT);
 
@@ -1753,11 +1758,23 @@ int nrf24l01_enablepipe(FAR struct nrf24l01_dev_s *dev, unsigned int pipeno,
 int nrf24l01_settxaddr(FAR struct nrf24l01_dev_s *dev,
                        FAR const uint8_t *txaddr)
 {
+  uint8_t temp_addr[dev->addrlen];
   CHECK_ARGS(dev && txaddr);
+  /*test code start*/
+  nrf24l01_readreg(dev, NRF24L01_TX_ADDR, temp_addr, dev->addrlen);
+  for(int i = 0; i < dev->addrlen; i++)
+    printf("nrf24l01_settxaddr:  first  read back addr[%d] = %x*****************\r\n", i, *(temp_addr+i)); //herc test code
+/*test code end*/
 
   nrf24l01_lock(dev->spi);
-
+  for(int i = 0; i < dev->addrlen; i++)
+    printf("nrf24l01_settxaddr: write tx addr[%d] = %x*****************\r\n", i, *(txaddr+i)); //herc test code 
   nrf24l01_writereg(dev, NRF24L01_TX_ADDR, txaddr, dev->addrlen);
+/*test code start*/
+  nrf24l01_readreg(dev, NRF24L01_TX_ADDR, temp_addr, dev->addrlen);
+  for(int i = 0; i < dev->addrlen; i++)
+    printf("nrf24l01_settxaddr:    check  read back addr[%d] = %x*****************\r\n", i, *(temp_addr+i)); //herc test code
+/*test code end*/
   nrf24l01_unlock(dev->spi);
   return OK;
 }

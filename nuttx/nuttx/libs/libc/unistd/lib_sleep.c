@@ -129,3 +129,44 @@ unsigned int sleep(unsigned int seconds)
 
   return 0;
 }
+
+
+
+unsigned int msleep(unsigned int mseconds)
+{
+  struct timespec rqtp;
+  struct timespec rmtp;
+  unsigned int remaining = 0;
+  int ret;
+
+  /* Don't sleep if mseconds == 0 */
+
+  if (mseconds > 0)
+    {
+      /* Let clock_nanosleep() do all of the work. */
+
+      rqtp.tv_sec  = 0;
+      rqtp.tv_nsec = mseconds * 1000;
+
+      ret = clock_nanosleep(CLOCK_REALTIME, 0, &rqtp, &rmtp);
+
+      /* clock_nanosleep() should only fail if it was interrupted by a
+       * signal, but we treat all errors the same,
+       */
+
+      if (ret < 0)
+        {
+          remaining = rmtp.tv_sec;
+          if (remaining < mseconds && rmtp.tv_nsec >= 500000000)
+            {
+              /* Round up */
+
+              remaining++;
+            }
+        }
+
+      return remaining;
+    }
+
+  return 0;
+}

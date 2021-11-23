@@ -1,5 +1,5 @@
 ############################################################################
-# boards/arm/stm32/stm32f411-minimum/src/Make.defs
+# apps/examples/uorbc_test/Make.defs
 #
 # Licensed to the Apache Software Foundation (ASF) under one or more
 # contributor license agreements.  See the NOTICE file distributed with
@@ -18,46 +18,6 @@
 #
 ############################################################################
 
-include $(TOPDIR)/Make.defs
-
-CSRCS = stm32_boot.c stm32_bringup.c 
-
-ifeq ($(CONFIG_NSH_LIBRARY),y)
-  CSRCS += stm32_appinit.c
+ifneq ($(CONFIG_EXAMPLES_UORBC_TEST),)
+CONFIGURED_APPS += $(APPDIR)/examples/uorbc_test
 endif
-
-ifeq ($(CONFIG_SPI),y)
-  CSRCS += stm32_spi.c
-endif
- 
-ifeq ($(CONFIG_ARCH_LEDS),y) ---add by wjh
-  CSRCS += stm32_autoleds.c
-endif
-
-ifeq ($(CONFIG_DEV_GPIO),y)
-  CSRCS += stm32_gpio.c
-endif
-
-ifeq ($(CONFIG_STM32_PWM),y)
-  CSRCS += stm32_pwm.c
-endif
-
-ifeq ($(CONFIG_STM32_I2C),y)
-  //CSRCS += stm32_i2c.c
-endif
-
-ifeq ($(CONFIG_SENSORS_MPU60X0),y)
-  CSRCS += stm32_mpu60x0.c
-endif
-
-ifeq ($(CONFIG_SENSORS_SPL06),y)
-  CSRCS += stm32_spl06.c
-endif
-
-ifeq ($(CONFIG_WL_NRF24L01),y)
-  CSRCS += stm32_nrf24l01.c
-endif
-
-DEPPATH += --dep-path board
-VPATH += :board
-CFLAGS += $(shell $(INCDIR) "$(CC)" $(TOPDIR)$(DELIM)arch$(DELIM)$(CONFIG_ARCH)$(DELIM)src$(DELIM)board$(DELIM)board)

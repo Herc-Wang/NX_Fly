@@ -36,6 +36,10 @@
 
 #include <nuttx/i2c/i2c_master.h>
 
+#ifdef CONFIG_WL_NRF24L01
+#include "stm32_nrf24l01.h"
+#endif
+
 //#include <nuttx/sensors/mpu60x0.h>
 //#include <nuttx/sensors/spl06.h>
 
@@ -189,6 +193,17 @@ while(leds_running_time < 500000)
   {
     syslog(LOG_ERR, "ERROR: stm32_spl06_initialize() failed: %d\n", ret);
   } 
+#endif
+
+#if defined(CONFIG_WL_NRF24L01)
+  /* Initialize the NRF24L01 wireless module */
+
+  ret = stm32_wlinitialize();
+  if (ret < 0)
+    {
+      syslog(LOG_ERR, "ERROR: stm32_wlinitialize() failed: %d\n",
+             ret);
+    }
 #endif
 
 //#endif

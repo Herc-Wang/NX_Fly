@@ -89,7 +89,8 @@ void usage(void);
 
 static const uint8_t defaultaddr[NRF24L01_MAX_ADDR_LEN] =
 {
-  0x01, 0xca, 0xfe, 0x12, 0x34
+  //0x01, 0xca, 0xfe, 0x12, 0x34
+  0x34,0x43,0x10,0x10,0xFF
 };
 
 char buff[NRF24L01_MAX_PAYLOAD_LEN + 1] = "";
@@ -150,6 +151,7 @@ int wireless_cfg(int fd)
   ioctl(fd, NRF24L01IOC_SETADDRWIDTH,
         (unsigned long)((uint32_t *)&addrwidth));
   ioctl(fd, NRF24L01IOC_SETTXADDR, (unsigned long)((uint8_t *)&defaultaddr));
+  
 
   ioctl(fd, NRF24L01IOC_SETPIPESCFG,
         (unsigned long)((nrf24l01_pipecfg_t **)&pipes_cfg));
@@ -342,9 +344,11 @@ int main(int argc, FAR char *argv[])
         }
 
 #ifdef CONFIG_WL_NRF24L01_RXSUPPORT
+//printf("pfds[1].revents  = %d\r\n",pfds[1].revents);
       if (!quit && (pfds[1].revents & POLLIN))
         {
           read_pkt(wl_fd);
+          printf("nrf24l01 rx one time \r\n");
         }
 #endif
     }

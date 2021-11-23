@@ -37,7 +37,7 @@
  * Pre-Processor Declarations
  ****************************************************************************/
 
-#define NRF24L01_MIN_ADDR_LEN    3      /* Minimal length (in bytes) of a pipe address */
+#define NRF24L01_MIN_ADDR_LEN    5      /* Minimal length (in bytes) of a pipe address */
 #define NRF24L01_MAX_ADDR_LEN    5      /* Maximum length (in bytes) of a pipe address */
 #define NRF24L01_MAX_PAYLOAD_LEN 32     /* Maximum length (in bytes) of a payload */
 #define NRF24L01_MAX_XMIT_RETR   15     /* Maximum auto retransmit count (for AA
