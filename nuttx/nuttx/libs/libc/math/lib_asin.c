@@ -98,8 +98,36 @@ double asin(double x)
     {
       y = asin_aux(x);
     }
-
+  //printf("**********************asin =  %lf\n", y);
   return y;
+}
+
+double asin_MY(double x, double *result)
+{
+  double y;
+
+  /* Verify that the input value is in the domain of the function */
+
+  if (x < -1.0 || x > 1.0 || isnan(x))
+    {
+      *result = NAN;
+      return 0;
+    }
+
+  /* if x is > sqrt(2), use identity for faster convergence */
+
+  if (fabs(x) > 0.71)
+    {
+      y = M_PI_2 - asin_aux(sqrt(1.0 - x * x));
+      y = copysign(y, x);
+    }
+  else
+    {
+      y = asin_aux(x);
+    }
+  //printf("**********************asin =  %lf\n", y);
+  *result = y;
+  return 0;
 }
 
 #endif /* CONFIG_HAVE_DOUBLE */

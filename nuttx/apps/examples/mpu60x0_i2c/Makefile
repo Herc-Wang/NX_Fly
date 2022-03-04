@@ -29,6 +29,7 @@ MODULE = $(CONFIG_EXAMPLES_MPU60X0_I2C)
 
 # The smallest thing you can build -- the MPU60X0_I2C example.
 
+CSRCS = imu.c imu_filter.c
 MAINSRC = mpu60x0_i2c_main.c
 
 include $(APPDIR)/Application.mk

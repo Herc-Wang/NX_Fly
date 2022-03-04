@@ -41,4 +41,16 @@ double copysign(double x, double y)
 
   return fabs(x);
 }
+
+double copysign_MY(double x, double y, double *result)
+{
+  if (y < 0)
+    {
+      *result = -fabs(x);
+      return 0;
+    }
+
+  *result = fabs(x);
+  return 0;
+}
 #endif

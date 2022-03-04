@@ -41,32 +41,86 @@
 #ifdef CONFIG_HAVE_DOUBLE
 double atan2(double y, double x)
 {
+  double t;
   if (x > 0)
     {
-      return atan(y / x);
+      t = atan(y / x);
+      //printf("*******************1***atan2 =  %lf\n", t);
+      return t;
     }
   else if (y >= 0 && x < 0)
     {
-      return atan(y / x) + M_PI;
+      t = atan(y / x) + M_PI;
+      //printf("*******************2***atan2 =  %lf\n", t);
+      return t;
     }
   else if (y < 0)
     {
       if (x == 0)
         {
-          return -M_PI_2;
+          t = -M_PI_2;
+          //printf("****************3******atan2 =  %lf\n", t);
+          return t;
         }
       else /* Can only be x < 0 */
         {
-          return atan(y / x) - M_PI;
+          t = atan(y / x) - M_PI;
+          //printf("****************4******atan2 =  %lf\n", t);
+          return t;
         }
     }
   else if (y > 0 && x == 0)
     {
-      return M_PI_2;
+      t = M_PI_2;
+      //printf("******************5****atan2 =  %lf\n", t);
+      return t;
     }
   else /* if (y == 0 && x == 0) Undefined but returns normally 0 */
     {
+      //printf("****************6******atan2 =  0\n");
       return 0;
+    }
+}
+
+double atan2_MY(double y, double x, double * result)
+{
+  if (x > 0)
+    {
+      * result = atan(y / x);
+      //printf("*******************1***atan2 =  %lf\n", t);
+      return 0;
+    }
+  else if (y >= 0 && x < 0)
+    {
+      * result = atan(y / x) + M_PI;
+      //printf("*******************2***atan2 =  %lf\n", t);
+      return 0;
+    }
+  else if (y < 0)
+    {
+      if (x == 0)
+        {
+          * result = -M_PI_2;
+          //printf("****************3******atan2 =  %lf\n", t);
+          return 0;
+        }
+      else /* Can only be x < 0 */
+        {
+          * result = atan(y / x) - M_PI;
+          //printf("****************4******atan2 =  %lf\n", t);
+          return 0;
+        }
+    }
+  else if (y > 0 && x == 0)
+    {
+      * result = M_PI_2;
+      //printf("******************5****atan2 =  %lf\n", t);
+      return 0;
+    }
+  else /* if (y == 0 && x == 0) Undefined but returns normally 0 */
+    {
+      //printf("****************6******atan2 =  0\n");
+      return 1;
     }
 }
 #endif

@@ -739,13 +739,13 @@ static int mpu_reset(FAR struct mpu_dev_s *dev)
 
   __mpu_write_config(dev, 0, 1);
 
-  /* ± 1000 deg/sec */
+  /* ± 2000 deg/sec */
 
-  __mpu_write_gyro_config(dev, 2);
+  __mpu_write_gyro_config(dev, 3);
 
-  /* ± 8g */
+  /* ± 16g */
 
-  __mpu_write_accel_config(dev, 2);
+  __mpu_write_accel_config(dev, 3);
 
   /* clear INT on any read (we aren't using that pin right now) */
 
@@ -775,7 +775,7 @@ static int mpu_open(FAR struct file *filep)
   FAR struct mpu_dev_s *dev = inode->i_private;
 
   /* Reset the register cache */
-_alert("mpu open \r\n");// add by herc   2021.10.27
+//_alert("mpu open \r\n");// add by herc   2021.10.27
   mpu_lock(dev);
   dev->bufpos = 0;
   mpu_unlock(dev);

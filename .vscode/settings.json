@@ -39,7 +39,15 @@
         "fcntl.h": "c",
         "system_error": "c",
         "stdint.h": "c",
-        "cstring": "c"
+        "cstring": "c",
+        "cmath": "c",
+        "*.tcc": "c",
+        "stdlib.h": "c",
+        "types.h": "c",
+        "imu_filter.h": "c",
+        "imu_types.h": "c",
+        "math.h": "c",
+        "imu.h": "c"
     },
 
     "search.exclude": {

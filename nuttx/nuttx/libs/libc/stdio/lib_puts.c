@@ -79,3 +79,45 @@ int puts(FAR const IPTR char *s)
   lib_give_semaphore(stdout);
   return nput;
 }
+
+
+
+
+/****************************************************************************
+ * Name: puts_MY
+ *
+ * Description:
+ *   puts() writes the string s  to stdout.
+ *
+ ****************************************************************************/
+
+int puts_MY(FAR const IPTR char *s)
+{
+  FILE *stream = stdout;
+  int nwritten;
+  int nput = EOF;
+  int ret;
+
+  /* Write the string (the next two steps must be atomic) */
+
+  lib_take_semaphore(stream);
+
+  /* Write the string without its trailing '\0' */
+
+  nwritten = fputs(s, stream);
+  if (nwritten > 0)
+    {
+      /* Flush the buffer after the newline is output if line buffering
+      * is enabled.
+      */
+      ret = lib_fflush(stream, true);
+      if (ret < 0)
+        {
+          nput = EOF;
+        }
+    }
+
+  lib_give_semaphore(stdout);
+  return nput;
+}
+
