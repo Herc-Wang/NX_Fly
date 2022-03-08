@@ -1,0 +1,15 @@
+{
+    "dependsOn":"Build",            // 任务依赖
+    "label": "Build and Download",  // 编译任务名
+    "type": "shell",                // 编译任务的类型，通常为shell/process类型
+    "command": "openocd",           // 编译命令
+    "args": [                       // 调用openocd时使用的参数，制定interface
+    "-f",
+    "interface/jlink_swd.cfg",
+    "-f",
+    "target/stm32f4x.cfg",
+    "-c",
+    "program ./nuttx/nuttx.hex verify reset exit"
+    ],
+    "problemMatcher": []
+}

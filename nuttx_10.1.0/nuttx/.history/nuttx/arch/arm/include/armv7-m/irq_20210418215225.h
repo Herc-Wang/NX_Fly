@@ -312,7 +312,7 @@ static inline irqstate_t up_irq_save(void)
   /* Return the current value of primask register and set
    * bit 0 of the primask register to disable interrupts
    */
-  
+
   __asm__ __volatile__
     (
      "\tmrs    %0, primask\n"

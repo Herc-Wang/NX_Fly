@@ -63,7 +63,7 @@
  * LSE - 32 KHz Crystal
  */
 
-#define STM32_BOARD_XTAL        8000000ul          /* herc -fix */
+#define STM32_BOARD_XTAL        8000000ul
 
 #define STM32_HSI_FREQUENCY     16000000ul
 #define STM32_LSI_FREQUENCY     32000

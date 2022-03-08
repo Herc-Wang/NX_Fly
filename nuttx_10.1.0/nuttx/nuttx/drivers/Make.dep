@@ -1,3 +1,60 @@
+gpio.o: ioexpander/gpio.c \
+ /home/herc/MyGithubCode/nuttx_10.1.0/nuttx/nuttx/include/nuttx/config.h \
+ /home/herc/MyGithubCode/nuttx_10.1.0/nuttx/nuttx/include/sys/types.h \
+ /home/herc/MyGithubCode/nuttx_10.1.0/nuttx/nuttx/include/nuttx/compiler.h \
+ /home/herc/MyGithubCode/nuttx_10.1.0/nuttx/nuttx/include/stdint.h \
+ /home/herc/MyGithubCode/nuttx_10.1.0/nuttx/nuttx/include/arch/types.h \
+ /home/herc/MyGithubCode/nuttx_10.1.0/nuttx/nuttx/include/arch/inttypes.h \
+ /home/herc/MyGithubCode/nuttx_10.1.0/nuttx/nuttx/include/limits.h \
+ /home/herc/MyGithubCode/nuttx_10.1.0/nuttx/nuttx/include/arch/limits.h \
+ /home/herc/MyGithubCode/nuttx_10.1.0/nuttx/nuttx/include/stdio.h \
+ /opt/gcc-arm-none-eabi-9-2020-q2-update/lib/gcc/arm-none-eabi/9.3.1/include/stdarg.h \
+ /home/herc/MyGithubCode/nuttx_10.1.0/nuttx/nuttx/include/sched.h \
+ /home/herc/MyGithubCode/nuttx_10.1.0/nuttx/nuttx/include/stdbool.h \
+ /home/herc/MyGithubCode/nuttx_10.1.0/nuttx/nuttx/include/strings.h \
+ /home/herc/MyGithubCode/nuttx_10.1.0/nuttx/nuttx/include/string.h \
+ /home/herc/MyGithubCode/nuttx_10.1.0/nuttx/nuttx/include/stddef.h \
+ /home/herc/MyGithubCode/nuttx_10.1.0/nuttx/nuttx/include/nuttx/b2c.h \
+ /home/herc/MyGithubCode/nuttx_10.1.0/nuttx/nuttx/include/queue.h \
+ /home/herc/MyGithubCode/nuttx_10.1.0/nuttx/nuttx/include/nuttx/sched.h \
+ /home/herc/MyGithubCode/nuttx_10.1.0/nuttx/nuttx/include/queue.h \
+ /home/herc/MyGithubCode/nuttx_10.1.0/nuttx/nuttx/include/signal.h \
+ /home/herc/MyGithubCode/nuttx_10.1.0/nuttx/nuttx/include/time.h \
+ /home/herc/MyGithubCode/nuttx_10.1.0/nuttx/nuttx/include/semaphore.h \
+ /home/herc/MyGithubCode/nuttx_10.1.0/nuttx/nuttx/include/pthread.h \
+ /home/herc/MyGithubCode/nuttx_10.1.0/nuttx/nuttx/include/sys/prctl.h \
+ /home/herc/MyGithubCode/nuttx_10.1.0/nuttx/nuttx/include/unistd.h \
+ /home/herc/MyGithubCode/nuttx_10.1.0/nuttx/nuttx/include/nuttx/semaphore.h \
+ /home/herc/MyGithubCode/nuttx_10.1.0/nuttx/nuttx/include/errno.h \
+ /home/herc/MyGithubCode/nuttx_10.1.0/nuttx/nuttx/include/nuttx/clock.h \
+ /home/herc/MyGithubCode/nuttx_10.1.0/nuttx/nuttx/include/nuttx/irq.h \
+ /home/herc/MyGithubCode/nuttx_10.1.0/nuttx/nuttx/include/assert.h \
+ /home/herc/MyGithubCode/nuttx_10.1.0/nuttx/nuttx/include/arch/irq.h \
+ /home/herc/MyGithubCode/nuttx_10.1.0/nuttx/nuttx/include/arch/chip/irq.h \
+ /home/herc/MyGithubCode/nuttx_10.1.0/nuttx/nuttx/include/arch/stm32/chip.h \
+ /home/herc/MyGithubCode/nuttx_10.1.0/nuttx/nuttx/include/arch/stm32/stm32f40xxx_irq.h \
+ /home/herc/MyGithubCode/nuttx_10.1.0/nuttx/nuttx/include/arch/armv7-m/irq.h \
+ /home/herc/MyGithubCode/nuttx_10.1.0/nuttx/nuttx/include/arch/armv7-m/nvicpri.h \
+ /home/herc/MyGithubCode/nuttx_10.1.0/nuttx/nuttx/include/arch/chip/chip.h \
+ /home/herc/MyGithubCode/nuttx_10.1.0/nuttx/nuttx/include/arch/armv7-m/irq_cmnvector.h \
+ /home/herc/MyGithubCode/nuttx_10.1.0/nuttx/nuttx/include/nuttx/wdog.h \
+ /home/herc/MyGithubCode/nuttx_10.1.0/nuttx/nuttx/include/nuttx/lib/libvars.h \
+ /home/herc/MyGithubCode/nuttx_10.1.0/nuttx/nuttx/include/nuttx/lib/getopt.h \
+ /home/herc/MyGithubCode/nuttx_10.1.0/nuttx/nuttx/include/nuttx/mm/shm.h \
+ /home/herc/MyGithubCode/nuttx_10.1.0/nuttx/nuttx/include/debug.h \
+ /home/herc/MyGithubCode/nuttx_10.1.0/nuttx/nuttx/include/syslog.h \
+ /home/herc/MyGithubCode/nuttx_10.1.0/nuttx/nuttx/include/sys/uio.h \
+ /home/herc/MyGithubCode/nuttx_10.1.0/nuttx/nuttx/include/nuttx/mm/gran.h \
+ /home/herc/MyGithubCode/nuttx_10.1.0/nuttx/nuttx/include/nuttx/fs/fs.h \
+ /home/herc/MyGithubCode/nuttx_10.1.0/nuttx/nuttx/include/nuttx/net/net.h \
+ /home/herc/MyGithubCode/nuttx_10.1.0/nuttx/nuttx/include/arch/arch.h \
+ /home/herc/MyGithubCode/nuttx_10.1.0/nuttx/nuttx/include/nuttx/pgalloc.h \
+ /home/herc/MyGithubCode/nuttx_10.1.0/nuttx/nuttx/include/nuttx/addrenv.h \
+ /home/herc/MyGithubCode/nuttx_10.1.0/nuttx/nuttx/include/nuttx/ioexpander/gpio.h \
+ /home/herc/MyGithubCode/nuttx_10.1.0/nuttx/nuttx/include/nuttx/signal.h \
+ /home/herc/MyGithubCode/nuttx_10.1.0/nuttx/nuttx/include/nuttx/wqueue.h \
+ /home/herc/MyGithubCode/nuttx_10.1.0/nuttx/nuttx/include/nuttx/fs/ioctl.h \
+ /home/herc/MyGithubCode/nuttx_10.1.0/nuttx/nuttx/include/nuttx/serial/tioctl.h
 losetup.o: loop/losetup.c \
  /home/herc/MyGithubCode/nuttx_10.1.0/nuttx/nuttx/include/nuttx/config.h \
  /home/herc/MyGithubCode/nuttx_10.1.0/nuttx/nuttx/include/sys/types.h \
@@ -197,12 +254,12 @@ pipe_common.o: pipes/pipe_common.c \
  /home/herc/MyGithubCode/nuttx_10.1.0/nuttx/nuttx/include/nuttx/pgalloc.h \
  /home/herc/MyGithubCode/nuttx_10.1.0/nuttx/nuttx/include/nuttx/addrenv.h \
  /home/herc/MyGithubCode/nuttx_10.1.0/nuttx/nuttx/include/fcntl.h \
+ /home/herc/MyGithubCode/nuttx_10.1.0/nuttx/nuttx/include/nuttx/arch.h \
+ /home/herc/MyGithubCode/nuttx_10.1.0/nuttx/nuttx/include/nuttx/cache.h \
  /home/herc/MyGithubCode/nuttx_10.1.0/nuttx/nuttx/include/nuttx/kmalloc.h \
  /home/herc/MyGithubCode/nuttx_10.1.0/nuttx/nuttx/include/malloc.h \
  /home/herc/MyGithubCode/nuttx_10.1.0/nuttx/nuttx/include/nuttx/mm/mm.h \
  /home/herc/MyGithubCode/nuttx_10.1.0/nuttx/nuttx/include/nuttx/userspace.h \
- /home/herc/MyGithubCode/nuttx_10.1.0/nuttx/nuttx/include/nuttx/arch.h \
- /home/herc/MyGithubCode/nuttx_10.1.0/nuttx/nuttx/include/nuttx/cache.h \
  pipes/pipe_common.h \
  /home/herc/MyGithubCode/nuttx_10.1.0/nuttx/nuttx/include/poll.h \
  /home/herc/MyGithubCode/nuttx_10.1.0/nuttx/nuttx/include/sys/poll.h

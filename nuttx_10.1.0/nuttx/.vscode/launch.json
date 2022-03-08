@@ -1,0 +1,38 @@
+{
+    // 使用 IntelliSense 了解相关属性。 
+    // 悬停以查看现有属性的描述。
+    // 欲了解更多信息，请访问: https://go.microsoft.com/fwlink/?linkid=830387
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "(gdb) nuttx",              // 配置名称，将会在启动配置的下拉菜单中显示
+            "type": "cortex-debug",             // 配置类型，这里使用拓展cortex-debug
+            "request": "launch",                // 请求配置类型，可以为launch（启动）或attach（附加）
+            "servertype": "jlink",              //
+            "program": "../nuttx/System.map",   // 将要进行调试的程序的路径   
+            "executable": "../nuttx/nuttx",     // 指定编译出来的nuttx文件
+            "device": "STM32F411CE",            // 指定mcu
+            "interface": "swd",                 // 指定调试模式
+            "ipAddress": null,
+            "serialNumber": null,
+            "args": [],                         // 程序调试时传递给程序的命令行参数，一般设为空即可
+            "stopAtEntry": false,
+            "cwd": "${fileDirname}",            // 调试程序时的工作目录，一般为${workspaceRoot}即代码所在目录
+            "environment": [],                  // 当前项目环境变量
+            "externalConsole": false,
+            "MIMode": "gdb-multiarch",          // 调试器模式/类型
+            
+            //"showDevDebugOutput": "true",
+
+
+            "setupCommands": [
+                {
+                    "description": "为 gdb 启用整齐打印",
+                    "text": "-enable-pretty-printing",
+                    "ignoreFailures": true
+                }
+            ]
+            
+        }
+    ]
+}

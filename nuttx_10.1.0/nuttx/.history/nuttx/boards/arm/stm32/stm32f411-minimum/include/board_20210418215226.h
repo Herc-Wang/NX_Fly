@@ -59,11 +59,11 @@
 
 /* HSI - 16 MHz RC factory-trimmed
  * LSI - 32 KHz RC
- * HSE - 16 MHz Crystal
+ * HSE - 25 MHz Crystal
  * LSE - 32 KHz Crystal
  */
 
-#define STM32_BOARD_XTAL        8000000ul          /* herc -fix */
+#define STM32_BOARD_XTAL        25000000ul
 
 #define STM32_HSI_FREQUENCY     16000000ul
 #define STM32_LSI_FREQUENCY     32000
@@ -98,7 +98,7 @@
  *           = 96,000,000 / 2 = 48,000,000
  */
 
-#define STM32_PLLCFG_PLLM       RCC_PLLCFG_PLLM(8)     /* herc -fix */
+#define STM32_PLLCFG_PLLM       RCC_PLLCFG_PLLM(25)
 #define STM32_PLLCFG_PLLN       RCC_PLLCFG_PLLN(192)
 #define STM32_PLLCFG_PLLP       RCC_PLLCFG_PLLP_2
 #define STM32_PLLCFG_PLLQ       RCC_PLLCFG_PLLQ(2)
